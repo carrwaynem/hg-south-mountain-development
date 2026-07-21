@@ -1,0 +1,719 @@
+<title>South Mountain Development</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --ink: #1a2733;
+    --ink-soft: #3b4c5a;
+    --brick: #9a3e28;
+    --brick-bright: #b8563c;
+    --stone: #e6e4dc;
+    --stone-card: #f3f2ec;
+    --paper: #f8f7f2;
+    --line: #c9c3b3;
+    --patina: #4f7a6a;
+    --on-brick: #f8f2ea;
+    --focus: #2c6e8f;
+
+    --font-display: "Big Caslon", "Book Antiqua", "Palatino Linotype", Palatino, Georgia, serif;
+    --font-body: Optima, "Segoe UI", "Trebuchet MS", "Helvetica Neue", Arial, sans-serif;
+    --font-mono: "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+    --max: 1100px;
+    color-scheme: light;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #eef1f3;
+      --ink-soft: #b9c4cc;
+      --brick: #d97a57;
+      --brick-bright: #e89372;
+      --stone: #16232e;
+      --stone-card: #1c2c39;
+      --paper: #101a22;
+      --line: #33475a;
+      --patina: #7bb09c;
+      --on-brick: #12100e;
+      --focus: #7fc4e8;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink: #eef1f3;
+    --ink-soft: #b9c4cc;
+    --brick: #d97a57;
+    --brick-bright: #e89372;
+    --stone: #16232e;
+    --stone-card: #1c2c39;
+    --paper: #101a22;
+    --line: #33475a;
+    --patina: #7bb09c;
+    --on-brick: #12100e;
+    --focus: #7fc4e8;
+    color-scheme: dark;
+  }
+  :root[data-theme="light"] {
+    --ink: #1a2733;
+    --ink-soft: #3b4c5a;
+    --brick: #9a3e28;
+    --brick-bright: #b8563c;
+    --stone: #e6e4dc;
+    --stone-card: #f3f2ec;
+    --paper: #f8f7f2;
+    --line: #c9c3b3;
+    --patina: #4f7a6a;
+    --on-brick: #f8f2ea;
+    --focus: #2c6e8f;
+    color-scheme: light;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  img, canvas { max-width: 100%; display: block; }
+  a { color: inherit; }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    text-wrap: balance;
+    margin: 0;
+  }
+  section { scroll-margin-top: 4.2rem; }
+
+  .wrap {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 1.25rem;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--brick);
+  }
+
+  /* nav */
+  header.site {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: color-mix(in srgb, var(--paper) 92%, transparent);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-row {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 0.85rem 1.25rem;
+    max-width: var(--max);
+    margin: 0 auto;
+  }
+  .wordmark {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    text-decoration: none;
+    font-weight: 700;
+  }
+  .wordmark span { color: var(--brick); }
+  nav.links {
+    display: flex;
+    gap: 1.1rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  nav.links::-webkit-scrollbar { display: none; }
+  nav.links a {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--ink-soft);
+    white-space: nowrap;
+    padding: 0.3rem 0.1rem;
+    border-bottom: 1px solid transparent;
+  }
+  nav.links a:hover, nav.links a:focus-visible { color: var(--brick); border-bottom-color: var(--brick); }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+  }
+
+  /* hero */
+  .hero {
+    padding: 3.2rem 0 0 0;
+  }
+  .hero-copy {
+    max-width: 42rem;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: rise 0.7s ease-out forwards;
+    animation-delay: 0.1s;
+  }
+  @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-copy { animation: none; opacity: 1; transform: none; }
+  }
+  .hero h1 {
+    font-size: clamp(2.1rem, 7vw, 3.6rem);
+    line-height: 1.06;
+    margin: 0.6rem 0 1.1rem 0;
+  }
+  .hero h1 em { font-style: italic; color: var(--brick); }
+  .hero p.lede {
+    font-size: 1.08rem;
+    color: var(--ink-soft);
+    max-width: 34rem;
+  }
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-top: 1.6rem;
+  }
+  .btn {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.85rem 1.3rem;
+    border-radius: 2px;
+    border: 1px solid var(--brick);
+  }
+  .btn.primary { background: var(--brick); color: var(--on-brick); }
+  .btn.primary:hover { background: var(--brick-bright); border-color: var(--brick-bright); }
+  .btn.ghost { color: var(--ink); border-color: var(--line); }
+  .btn.ghost:hover { border-color: var(--brick); color: var(--brick); }
+
+  #skyline {
+    width: 100%;
+    height: 64px;
+    margin-top: 2.6rem;
+  }
+
+  /* ledger stat row */
+  .ledger {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .ledger div {
+    padding: 1.1rem 1rem;
+    text-align: center;
+    border-left: 1px solid var(--line);
+  }
+  .ledger div:first-child { border-left: none; }
+  .ledger .n {
+    display: block;
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: clamp(1.3rem, 4vw, 1.7rem);
+    color: var(--brick);
+    font-weight: 700;
+  }
+  .ledger .l {
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+  }
+
+  /* generic section rhythm */
+  .block { padding: 3.4rem 0; }
+  .block + .block { border-top: 1px solid var(--line); }
+  .block h2 {
+    font-size: clamp(1.5rem, 4.2vw, 2.1rem);
+    margin: 0.4rem 0 1.2rem 0;
+  }
+  .block > .wrap > p.intro {
+    max-width: 40rem;
+    color: var(--ink-soft);
+  }
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+
+  /* clause cards */
+  .clauses {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    margin-top: 1.6rem;
+  }
+  @media (min-width: 720px) {
+    .clauses { grid-template-columns: repeat(3, 1fr); }
+  }
+  .clause {
+    background: var(--stone-card);
+    padding: 1.4rem 1.3rem;
+  }
+  .clause .num {
+    font-family: var(--font-mono);
+    color: var(--brick);
+    font-size: 0.85rem;
+  }
+  .clause h3 {
+    font-size: 1.02rem;
+    margin: 0.5rem 0 0.5rem 0;
+  }
+  .clause p { margin: 0; color: var(--ink-soft); font-size: 0.94rem; }
+
+  .closer {
+    margin-top: 1.6rem;
+    max-width: 40rem;
+    color: var(--ink-soft);
+  }
+
+  /* portfolio registry */
+  .registry-group { margin-top: 2rem; }
+  .registry-group:first-child { margin-top: 1.6rem; }
+  .registry-group h3 {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--patina);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 0.5rem;
+  }
+  .entry {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px dotted var(--line);
+  }
+  @media (min-width: 720px) {
+    .entry { grid-template-columns: 15rem 1fr; gap: 1.2rem; align-items: baseline; }
+  }
+  .entry .addr {
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    font-weight: 700;
+  }
+  .entry .desc { color: var(--ink-soft); font-size: 0.94rem; }
+
+  /* process */
+  .steps {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    margin-top: 1.8rem;
+  }
+  @media (min-width: 860px) {
+    .steps { grid-template-columns: repeat(5, 1fr); }
+  }
+  .step {
+    padding: 1rem 0.6rem 1rem 0;
+    position: relative;
+    border-left: 2px solid var(--line);
+    padding-left: 1rem;
+    margin-left: 0.15rem;
+  }
+  @media (min-width: 860px) {
+    .step {
+      border-left: none;
+      border-top: 2px solid var(--line);
+      padding-left: 0;
+      padding-top: 1rem;
+      margin-left: 0;
+    }
+  }
+  .step .idx {
+    font-family: var(--font-mono);
+    color: var(--brick);
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  .step h3 { font-size: 0.98rem; margin: 0.3rem 0 0.25rem 0; }
+  .step p { margin: 0; font-size: 0.86rem; color: var(--ink-soft); }
+
+  /* security */
+  .shields {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    margin-top: 1.6rem;
+  }
+  @media (min-width: 720px) {
+    .shields { grid-template-columns: repeat(3, 1fr); }
+  }
+  .shield {
+    background: var(--stone-card);
+    padding: 1.3rem 1.2rem;
+  }
+  .shield h3 { font-size: 0.98rem; margin: 0 0 0.4rem 0; color: var(--patina); }
+  .shield p { margin: 0; font-size: 0.9rem; color: var(--ink-soft); }
+
+  /* leadership */
+  .lead-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.6rem;
+    margin-top: 1.6rem;
+    align-items: start;
+  }
+  @media (min-width: 760px) {
+    .lead-grid { grid-template-columns: 9rem 1fr; }
+  }
+  .seal {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    border: 2px solid var(--brick);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+    text-align: center;
+    color: var(--brick);
+    text-transform: uppercase;
+    padding: 0.6rem;
+  }
+  .lead-grid h3 { font-size: 1.2rem; margin: 0 0 0.6rem 0; }
+  .lead-grid p { color: var(--ink-soft); }
+  .credentials {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin-top: 0.9rem;
+  }
+  .credentials span {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border: 1px solid var(--line);
+    padding: 0.3rem 0.6rem;
+    color: var(--ink-soft);
+  }
+
+  /* contact */
+  .contact-card {
+    margin-top: 1.6rem;
+    border: 1px solid var(--line);
+    background: var(--stone-card);
+    padding: 1.6rem;
+    max-width: 34rem;
+  }
+  .contact-card p.placeholder {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+  }
+
+  footer.site {
+    border-top: 1px solid var(--line);
+    padding: 2rem 0 2.6rem 0;
+  }
+  footer.site .wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  footer.site .fine {
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    max-width: 42rem;
+  }
+</style>
+
+<header class="site">
+  <div class="nav-row">
+    <a href="#top" class="wordmark">South<span>&nbsp;Mountain</span>&nbsp;Development</a>
+    <nav class="links" aria-label="Section navigation">
+      <a href="#approach">Approach</a>
+      <a href="#advantage">Advantage</a>
+      <a href="#portfolio">Portfolio</a>
+      <a href="#process">Process</a>
+      <a href="#security">Security</a>
+      <a href="#team">Team</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-copy">
+        <div class="eyebrow">Washington, D.C. Metro / Probate &amp; Value Add Real Estate</div>
+        <h1>The deed is only <em>the beginning.</em></h1>
+        <p class="lede">South Mountain Development resolves the legal and administrative barriers that keep inherited property from reaching its full value, then rebuilds it into homes worth owning.</p>
+        <div class="cta-row">
+          <a class="btn primary" href="#portfolio">View the Portfolio</a>
+          <a class="btn ghost" href="#contact">Get in Touch</a>
+        </div>
+      </div>
+      <canvas id="skyline" aria-hidden="true"></canvas>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="ledger reveal">
+      <div><span class="n">25+</span><span class="l">Properties Completed</span></div>
+      <div><span class="n">12</span><span class="l">Years in the DC Metro</span></div>
+      <div><span class="n">100%</span><span class="l">Asset Backed Transactions</span></div>
+    </div>
+  </div>
+
+  <section class="block" id="approach">
+    <div class="wrap">
+      <div class="eyebrow reveal">I. Our Approach</div>
+      <h2 class="reveal">Legal precision, applied to real estate.</h2>
+      <p class="intro reveal">South Mountain Development is the Washington, D.C. metro's specialist in probate real estate, built to resolve the legal, financial, and administrative barriers that keep heirs from accessing and monetizing inherited property. By coordinating with experienced probate counsel, title professionals, contractors, and financing partners, we clear those barriers, create value for heirs, and build lasting residential assets in the process.</p>
+      <p class="intro reveal">Beyond probate, South Mountain Development also acquires distressed and value add residential properties through strategic partnerships across the District. Every project shares the same mission: transform underutilized real estate into high quality homes, backed by tangible collateral and disciplined underwriting.</p>
+    </div>
+  </section>
+
+  <section class="block" id="advantage">
+    <div class="wrap">
+      <div class="eyebrow reveal">II. The Advantage</div>
+      <h2 class="reveal">Competition thins where the paperwork gets hard.</h2>
+      <p class="intro reveal">One of the company's key competitive advantages is our proven ability to operate in a niche segment of the real estate market where competition is naturally limited by the complexity of the acquisition process. Tax sale and probate properties often require specialized knowledge of legal procedures, title issues, court requirements, and estate administration, creating significant barriers to entry for most investors. Many buyers avoid these opportunities because they demand extensive due diligence, patience, and expertise to navigate successfully.</p>
+
+      <div class="clauses reveal">
+        <div class="clause">
+          <div class="num">i.</div>
+          <h3>Legal &amp; Title Complexity</h3>
+          <p>Navigating liens, title defects, and probate filings that most investors are not equipped to handle.</p>
+        </div>
+        <div class="clause">
+          <div class="num">ii.</div>
+          <h3>Court &amp; Estate Requirements</h3>
+          <p>Coordinating directly with probate courts, executors, and heirs throughout the process.</p>
+        </div>
+        <div class="clause">
+          <div class="num">iii.</div>
+          <h3>Extensive Due Diligence</h3>
+          <p>Evaluating each asset takes patience and expertise most buyers are unwilling to invest.</p>
+        </div>
+      </div>
+
+      <p class="closer reveal">By developing specialized capabilities in identifying, evaluating, and acquiring these assets, the company can access properties with less competition and the potential to acquire them below market value. This disciplined approach provides a consistent pipeline of unique investment opportunities while creating value through legal and operational expertise rather than relying solely on competitive bidding.</p>
+    </div>
+  </section>
+
+  <section class="block" id="portfolio">
+    <div class="wrap">
+      <div class="eyebrow reveal">III. The Portfolio</div>
+      <h2 class="reveal">A record of completed work across the District.</h2>
+      <p class="intro reveal">A selection of single family, multi-family, and commercial projects directed across Washington, DC.</p>
+
+      <div class="registry-group reveal">
+        <h3>Single Family Residential</h3>
+        <div class="entry"><div class="addr">234 Rhode Island Ave NW</div><div class="desc">Rehabilitation and conversion of a single family home into a two family residence.</div></div>
+        <div class="entry"><div class="addr">925 Potomac Ave SE</div><div class="desc">Historic renovation of a Barracks Row rowhome in the Navy Yard.</div></div>
+        <div class="entry"><div class="addr">425 Irving Street NW</div><div class="desc">Rehabilitation of a Wardman style rowhome in Columbia Heights.</div></div>
+        <div class="entry"><div class="addr">1471 Roxana Street NW</div><div class="desc">Custom kitchen and bath renovation.</div></div>
+        <div class="entry"><div class="addr">1799 Sycamore Street NW</div><div class="desc">Custom design and build of a new 5,000 square foot home on a vacant lot.</div></div>
+        <div class="entry"><div class="addr">1841 Park Road NW</div><div class="desc">Complete rehabilitation of a 10,000 square foot historic residence.</div></div>
+        <div class="entry"><div class="addr">1429 3rd Street NW</div><div class="desc">Complete gut and renovation of a basement unit.</div></div>
+        <div class="entry"><div class="addr">1369 Michigan Avenue NE</div><div class="desc">Renovation and restoration of a three bedroom home.</div></div>
+      </div>
+
+      <div class="registry-group reveal">
+        <h3>Multi-Family &amp; Conversions</h3>
+        <div class="entry"><div class="addr">68 V Street NW</div><div class="desc">Conversion of a single family home into duplex condominiums.</div></div>
+        <div class="entry"><div class="addr">515 Q Street NW</div><div class="desc">Conversion of a single family home into three condominiums.</div></div>
+        <div class="entry"><div class="addr">1133 6th Street NW</div><div class="desc">Conversion of a single family rowhome into five residential units.</div></div>
+        <div class="entry"><div class="addr">1431 3rd Street NW</div><div class="desc">Conversion of a single family home into duplex homes.</div></div>
+        <div class="entry"><div class="addr">1247 Kenyon Street NW</div><div class="desc">Rehabilitation of a three story rowhome into apartment units.</div></div>
+        <div class="entry"><div class="addr">1412 5th Street NW</div><div class="desc">Conversion of a single family detached home into a three unit condominium rowhome.</div></div>
+      </div>
+
+      <div class="registry-group reveal">
+        <h3>Commercial</h3>
+        <div class="entry"><div class="addr">The Links National HQ</div><div class="desc">Commercial renovation of the organization's headquarters building.</div></div>
+        <div class="entry"><div class="addr">Georgetown Power Plant</div><div class="desc">Mixed use office and residential complex.</div></div>
+        <div class="entry"><div class="addr">Room 11</div><div class="desc">Conversion of vacant commercial space into a neighborhood wine and cheese restaurant.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="process">
+    <div class="wrap">
+      <div class="eyebrow reveal">IV. How It Works</div>
+      <h2 class="reveal">From open estate to closed sale.</h2>
+      <div class="steps reveal">
+        <div class="step"><div class="idx">1</div><h3>Acquisition</h3><p>Identify and acquire undervalued or distressed property.</p></div>
+        <div class="step"><div class="idx">2</div><h3>Probate Resolution</h3><p>Clear legal, title, and estate barriers where applicable.</p></div>
+        <div class="step"><div class="idx">3</div><h3>Renovation</h3><p>Design, permit, and rebuild to a high quality standard.</p></div>
+        <div class="step"><div class="idx">4</div><h3>Sale or Refinance</h3><p>Bring the finished asset to market or place long term financing.</p></div>
+        <div class="step"><div class="idx">5</div><h3>Investor Payout</h3><p>Return capital to partners on the terms set at closing.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="security">
+    <div class="wrap">
+      <div class="eyebrow reveal">V. Security &amp; Protection</div>
+      <h2 class="reveal">Capital tied to the asset, not a promise.</h2>
+      <p class="intro reveal">Investor protection is a core principle of the business. Capital is secured through recorded deeds of trust, mortgage liens, promissory notes, and a collateral interest tied directly to the underlying real estate. This asset backed approach provides protection beyond projected returns.</p>
+      <div class="shields reveal">
+        <div class="shield"><h3>Recorded Lien</h3><p>Every investment is secured by a deed of trust or mortgage lien recorded against the property.</p></div>
+        <div class="shield"><h3>Promissory Note</h3><p>Terms, repayment schedule, and rate are documented in a signed promissory note.</p></div>
+        <div class="shield"><h3>Collateral Interest</h3><p>Capital is tied to a tangible asset, not an unsecured promise.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="team">
+    <div class="wrap">
+      <div class="eyebrow reveal">VI. Leadership</div>
+      <h2 class="reveal">Trained to read the fine print. Built to swing a hammer.</h2>
+      <div class="lead-grid reveal">
+        <div class="seal">Member<br>DC Bar</div>
+        <div>
+          <h3>Marlon G. Meade</h3>
+          <p>Marlon G. Meade leads South Mountain Development with a background few in DC real estate can match. A graduate of Columbia University School of Law and an active member of the District of Columbia Bar, he built his early career in complex litigation before turning his legal training toward real estate. Since founding South Mountain Development, he has directed the acquisition, permitting, construction, and disposition of dozens of properties across the District, pairing legal precision with hands on construction management.</p>
+          <div class="credentials">
+            <span>Columbia Law School, J.D.</span>
+            <span>DC Bar, Active</span>
+            <span>25+ Properties Directed</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="contact">
+    <div class="wrap">
+      <div class="eyebrow reveal">VII. Contact</div>
+      <h2 class="reveal">Start a conversation.</h2>
+      <p class="intro reveal">Reach out to discuss a property, a partnership, or the firm's current investment opportunities.</p>
+      <div class="contact-card reveal">
+        <p class="placeholder">Contact details to be added.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="wordmark">South<span>&nbsp;Mountain</span>&nbsp;Development</div>
+    <p class="fine">This site is for informational purposes only and does not constitute an offer to sell securities. Terms of any investment are governed exclusively by the signed promissory note and deed of trust for that investment.</p>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var canvas = document.getElementById('skyline');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var heights = [34, 48, 40, 54, 44, 38, 52, 42, 46, 36, 56, 40, 48, 44, 38, 50];
+
+    function color(varName) {
+      return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+    }
+
+    function draw() {
+      var dpr = window.devicePixelRatio || 1;
+      var w = canvas.clientWidth;
+      var h = 64;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, w, h);
+
+      var line = color('--line');
+      var brick = color('--brick');
+      var unit = 40;
+      var count = Math.ceil(w / unit) + 1;
+
+      ctx.strokeStyle = line;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(0, h - 0.5);
+      ctx.lineTo(w, h - 0.5);
+      ctx.stroke();
+
+      for (var i = 0; i < count; i++) {
+        var x = i * unit;
+        var bh = heights[i % heights.length];
+        var bw = unit - 6;
+        var y = h - bh;
+
+        ctx.fillStyle = i % 5 === 0 ? brick : line;
+        ctx.globalAlpha = i % 5 === 0 ? 0.9 : 0.55;
+
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + bw / 2, y - 14);
+        ctx.lineTo(x + bw, y);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.fillRect(x, y, bw, bh);
+
+        if (i % 3 === 0) {
+          ctx.fillRect(x + bw - 10, y - 20, 5, 10);
+        }
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    var resizeTimer;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(draw, 120);
+    });
+
+    var mq = window.matchMedia('(prefers-color-scheme: dark)');
+    if (mq.addEventListener) mq.addEventListener('change', draw);
+
+    new MutationObserver(draw).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+    draw();
+  })();
+
+  (function () {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var items = document.querySelectorAll('.reveal');
+    if (reduce || !('IntersectionObserver' in window)) {
+      items.forEach(function (el) { el.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    items.forEach(function (el) { io.observe(el); });
+  })();
+</script>
